@@ -47,6 +47,9 @@
     mask-image: url("icons/card-zoom.svg");
     mask-repeat: no-repeat;
     mask-position: center;
+    -webkit-mask-image: url(icons/card-zoom.svg);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
   }
 
   .tczoomslider input {
