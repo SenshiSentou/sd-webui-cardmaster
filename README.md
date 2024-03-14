@@ -1,3 +1,7 @@
+<img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/toma-chan.png" width="300">
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J81VHA2)
+
 ![](https://github.com/SenshiSentou/sd-webui-tinycards/blob/main/preview.gif)
 
 # Tiny Cards
