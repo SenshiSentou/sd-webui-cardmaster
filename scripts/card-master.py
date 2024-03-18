@@ -1,5 +1,6 @@
 import os
 import base64
+import urllib.parse
 from pathlib import Path
 
 import gradio as gr
@@ -8,10 +9,13 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from modules import shared, ui_components
 
+def b64_to_UTF8(s: str):
+    return urllib.parse.unquote(base64.b64decode(s).decode("ascii"))
+
 def card_master_api(blocks: gr.Blocks, app: FastAPI):
     @app.get("/cardmaster/networkinfo/")
     async def get_network_info(network_folder: str, network_name: str):
-        network_path = Path(os.path.join(base64.b64decode(network_folder).decode("ascii"), base64.b64decode(network_name).decode("ascii")))
+        network_path = Path(os.path.join(b64_to_UTF8(network_folder), b64_to_UTF8(network_name)))
 
         if network_path is None or (not network_path.exists()):
             return JSONResponse({"error": "The specified network does not exist"}, status_code=404)

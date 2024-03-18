@@ -50,7 +50,7 @@
             if (cachedInfo.hasOwnProperty(keyPath)) {
                 this.populateNetworkInfo(card.dataset.name, cachedInfo[keyPath]);
             }
-            api.get(`networkinfo?network_folder=${btoa(card.dataset.sortPath)}&network_name=${btoa(card.dataset.sortName)}`)
+            api.get(`networkinfo?network_folder=${btoa(encodeURIComponent(card.dataset.sortPath))}&network_name=${btoa(encodeURIComponent(card.dataset.sortName))}`)
                 .then((info) => {
                 updateNetworkInfo(keyPath, info, card);
                 if (activeCard == card) { // else we've moved on already
@@ -153,6 +153,13 @@
             this.style.top = `${cardRect.top - parentRect.top + cardRect.height * .5}px`;
             this.toggle(true);
             this.update(card);
+            const rect = this.getBoundingClientRect();
+            if (rect.x < 0) {
+                this.style.left = `${cardRect.left - parentRect.left + cardRect.width * .5 - rect.x}px`;
+            }
+            else if (rect.x + rect.width > screen.width) {
+                this.style.left = `${cardRect.left - parentRect.left + cardRect.width * .5 - (rect.x + rect.width - screen.width)}px`;
+            }
         }
     }
     customElements.define('cardmaster-inspector', Inspector, { extends: 'div' });
