@@ -280,7 +280,7 @@ type InspectorType = 'docked' | 'floating' | 'compact';
 
     async function injectUI(): Promise<void>{
         while(opts.cardmaster_card_activation_text_count == undefined){ // wait for opts to load
-            await wait(1000);
+            await wait(200);
         }
 
         if(opts.cardmaster_card_activation_text_count.indexOf('📄➕📑') == 0){ // emojies are 2 chars long, so we can't just check [0]
