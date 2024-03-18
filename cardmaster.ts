@@ -108,16 +108,14 @@ type InspectorType = 'docked' | 'floating' | 'compact';
             if(cachedInfo.hasOwnProperty(keyPath)){ 
                 this.populateNetworkInfo(card.dataset.name, cachedInfo[keyPath]);
             }
-            
-            api.get(`networkinfo?network_folder=${btoa(encodeURIComponent(card.dataset.sortPath))}&network_name=${btoa(encodeURIComponent(card.dataset.sortName))}`)
+
+            updateNetworkInfo(keyPath, card)
             .then((info: NetworkInfo) => {
-                updateNetworkInfo(keyPath, info, card);
-                
-                if(activeCard == card){ // else we've moved on already
+                if(info && activeCard == card){ // else we've moved on already
                     this.populateNetworkInfo(card.dataset.name, info);
                 }
             })
-            .catch(e => logResponseWarning(`There was an error fetching the network info for ${encodeURIComponent(card.dataset.sortPath)}`, e));
+            .catch(_ => {});
         }
 
         populateNetworkInfo(name: string, info: NetworkInfo): void{
@@ -321,11 +319,8 @@ type InspectorType = 'docked' | 'floating' | 'compact';
                     const card = <HTMLElement>entry.target;
                     const keyPath = getKeyPathForCard(card);
 
-                    api.get(`networkinfo?network_folder=${btoa(card.dataset.sortPath)}&network_name=${btoa(card.dataset.sortName)}`)
-                    .then((info: NetworkInfo) => {
-                        updateNetworkInfo(keyPath, info, card);
-                    })
-                    .catch(e => logResponseWarning(`There was an error fetching the network info for ${encodeURIComponent(card.dataset.sortPath)}`, e));
+                    updateNetworkInfo(keyPath, card)
+                    .catch(_ => {});
                 }
             }
           }, {root: null, rootMargin: '0px'});
@@ -422,44 +417,49 @@ type InspectorType = 'docked' | 'floating' | 'compact';
         window.cardClicked = function(_tabname: string, _textToAdd: string, _allowNegativePrompt: boolean): void {}
     }
 
-    function updateNetworkInfo(keyPath:string, info: NetworkInfo, card: HTMLElement | null): void{
-        const tags = getTagsFromText(info['activation text']);
+    function updateNetworkInfo(keyPath:string, card: HTMLElement | null): Promise<void | NetworkInfo>{
+        return api.get(`networkinfo?network_folder=${btoa(encodeURIComponent(card.dataset.sortPath))}&network_name=${btoa(encodeURIComponent(card.dataset.sortName))}`)
+        .then((info: NetworkInfo) => {
+            const tags = getTagsFromText(info['activation text']);
+            let activationTextSections: string[][] = [];
 
-        let activationTextSections: string[][] = []; //[['foo', 'bar'], ['foo', 'baz']]
+            if(info['activation text'].length > 0){
+                let activationTexts = info['activation text'].split(/(?:,,|;)\s*/); // Try to split by ,, or ;
 
-        if(info['activation text'].length > 0){
-            let activationTexts = info['activation text'].split(/(?:,,|;)\s*/); // Try to split by ,, or ;
+                if(activationTexts.length > 1){
+                    activationTextSections = activationTexts.map(getTagsFromText);
+                }
+                else if(activationTexts.length == 1){ // No sections specified, some authors use the first tag as separator by repeating it
+                    let currentSection = 0;
+                    
+                    activationTextSections.push([tags[0]]);
 
-            if(activationTexts.length > 1){
-                activationTextSections = activationTexts.map(getTagsFromText);
-            }
-            else if(activationTexts.length == 1){ // No sections specified, some authors use the first tag as separator by repeating it
-                let currentSection = 0;
-                
-                activationTextSections.push([tags[0]]);
+                    for(let i = 1 ; i < tags.length; i++){
+                        if(tags[i] == tags[0]){
+                            currentSection++;
+                            activationTextSections.push([]);
+                        }
 
-                for(let i = 1 ; i < tags.length; i++){
-                    if(tags[i] == tags[0]){
-                        currentSection++;
-                        activationTextSections.push([]);
+                        activationTextSections[currentSection].push(tags[i]);
                     }
-
-                    activationTextSections[currentSection].push(tags[i]);
                 }
             }
-        }
 
-        info['activation sections'] = activationTextSections;
+            info['activation sections'] = activationTextSections;
 
-        cachedInfo[keyPath] = info;
-        
-        if(card){
-            switch(document.body.dataset.cardmasterCardHint){
-                case 'tags':        card.dataset.cardmasterNumActivationTexts = activationTextSections.length.toString(); break;
-                case 'sections':    card.dataset.cardmasterNumActivationTexts = tags.length.toString(); break;
-                case 'full':        card.dataset.cardmasterNumActivationTexts = `${tags.length} (${activationTextSections.length})`; break;
+            cachedInfo[keyPath] = info;
+            
+            if(card){
+                switch(document.body.dataset.cardmasterCardHint){
+                    case 'tags':        card.dataset.cardmasterNumActivationTexts = activationTextSections.length.toString(); break;
+                    case 'sections':    card.dataset.cardmasterNumActivationTexts = tags.length.toString(); break;
+                    case 'full':        card.dataset.cardmasterNumActivationTexts = `${tags.length} (${activationTextSections.length})`; break;
+                }
             }
-        }
+
+            return info;
+        })
+        .catch(e => logResponseWarning(`There was an error fetching the network info for ${encodeURIComponent(card.dataset.sortPath)}`, e));
     }
 
     function getKeyPathForCard(card: HTMLElement): string{
