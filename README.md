@@ -1,4 +1,4 @@
-<img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/mastercard-beta/toma-chan.png" width="300">
+<img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/toma-chan.png" width="300">
 
 # Card Master
 
@@ -8,13 +8,13 @@ Card Master adds a host of easability and quality of life features to the cards 
 
 The first thing you might notice is a zoom slider added to the extra tabs header. This makes browsing large collections of checkpoints and LoRAs much faster. The card will grow on hover, so you won't miss any information.
 
-![](https://github.com/SenshiSentou/sd-webui-tinycards/blob/mastercard-beta/preview.gif)
+![](https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/preview.gif)
 
 ## Docked detail view
 
 Right next to the zoom slider is a button that will toggle a side panel called the "docked detail view" (this is referred to as an `inspector` in code). This detail view will show more granular information about a card.
 
-<img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/mastercard-beta/docked-detail-view.png" width="300">
+<img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/docked-detail-view.png" width="300">
 
 - The circle in front of the card name indicates whether the `<lora:name:weight>` tag is present in the prompt text. Clicking on the name will add or remove this tag.
 - A lot or LoRAs come with several different activation text "sections" (see below for more information on this). Each tag shows whether or not it's present or not (green background = present) in either the positive *or* negative prompt. Clicking a tag will add or remove it from the positive prompt. Right-clicking or holding `alt` while clicking it will do the same for the negative prompt instead. The "quick button" (`[+]` or `[-]`) in front will perform the action for all tags in that section at once. Tags are never added more than once, so don't be afraid to use this even if some of the section's tags are already present.
@@ -24,13 +24,13 @@ By default, clicking on a card will apply all activation texts if there are any 
 
 However, both click, double click, and right click actions are fully customizable from the settings page.
 
-![](https://github.com/SenshiSentou/sd-webui-tinycards/blob/mastercard-beta/settings.png)
+![](https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/settings.png)
 
 ## Other detail views
 
 If you don't like having a full detail view taking up space all the time, you might prefer to bind one of your card click actions to open either the **floating detail view** or **compact detail view** instead. The floating detail view looks identical to the docked one, opening up on top of the card you clicked, and closing when you mouse our of it. The compact detail view omits all information except for the tags and functions the same way.
 
-<img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/mastercard-beta/compact-detail-view.png" width="450">
+<img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/compact-detail-view.png" width="450">
 
 *The compact detail view*
 
