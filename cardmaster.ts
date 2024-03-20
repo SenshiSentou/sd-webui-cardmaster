@@ -369,7 +369,7 @@ type InspectorType = 'docked' | 'floating' | 'compact';
             
             // wait for cards to load
             while(cardContainers.length == 0){
-                await wait(2000);
+                await wait(500);
                 cardContainers = networkContainer.querySelectorAll('.extra-network-cards');
             }
 
@@ -486,7 +486,8 @@ type InspectorType = 'docked' | 'floating' | 'compact';
     function isLoraOrTICard(card: HTMLElement): boolean{
         const enc = card.closest('.extra-network-cards');
 
-        return enc && (enc.id == 'txt2img_lora_cards' || enc.id == 'txt2img_textual_inversion_cards');
+        // return enc && (enc.id == 'txt2img_lora_cards' || enc.id == 'txt2img_textual_inversion_cards');
+        return enc && enc.id.match(/(?:txt|img)2img_(?:lora_cards|textual_inversion_cards)/i) != null;
     }
 
     function onCardClicked(card: HTMLElement, inspector: Inspector, clickType: ClickType, withAlt: boolean): void{

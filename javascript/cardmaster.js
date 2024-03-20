@@ -251,7 +251,7 @@
             let cardContainers = networkContainer.querySelectorAll('.extra-network-cards');
             // wait for cards to load
             while (cardContainers.length == 0) {
-                await wait(2000);
+                await wait(500);
                 cardContainers = networkContainer.querySelectorAll('.extra-network-cards');
             }
             const cards = networkContainer.querySelectorAll('.card');
@@ -346,7 +346,8 @@
     }
     function isLoraOrTICard(card) {
         const enc = card.closest('.extra-network-cards');
-        return enc && (enc.id == 'txt2img_lora_cards' || enc.id == 'txt2img_textual_inversion_cards');
+        // return enc && (enc.id == 'txt2img_lora_cards' || enc.id == 'txt2img_textual_inversion_cards');
+        return enc && enc.id.match(/(?:txt|img)2img_(?:lora_cards|textual_inversion_cards)/i) != null;
     }
     function onCardClicked(card, inspector, clickType, withAlt) {
         const info = getCachedInfoForCard(card);

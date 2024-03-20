@@ -47,7 +47,10 @@ There are a couple things Card Master is opinionated about, causing it to deviat
 1. When adding activation texts, only those that are not already present in the prompt will be added; duplicate texts will never be added.
 2. When clicking a card, if all activation texts are already present, both the `<lora:name:weight>` *and all of its associated tags* will be removed from the prompts.
 
-In addition, when adding an activation text from a detail view, if that card's `<lora:name:weight>` text is not already present in the prompt, it will automatically be added.
+There are also two "invisible" behaviours:
+
+1. When adding an activation text from a detail view, if that card's `<lora:name:weight>` text is not already present in the prompt, it will automatically be added.
+2. When a card or activation text is clicked to be added or removed from the prompt text, the `alt` key can be held to apply this effect to the negative prompt instead.
 
 # Installation
 
