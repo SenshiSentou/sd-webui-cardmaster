@@ -361,8 +361,15 @@ type InspectorType = 'docked' | 'floating' | 'compact';
 
             detailViewButton.addEventListener('click', () => {
                 inspector.toggle(!inspector.isOpen);
-            });
 
+                if(!inspector.isOpen){
+                    const selectedCard = inspector.parentNode.querySelector('.extra-network-cards .card.card-master-selected');
+    
+                    if(selectedCard){
+                        selectedCard.classList.remove('card-master-selected');
+                    }
+                }
+            });
             
             // inneer html gets reset once extra networks get added
             let cardContainers = networkContainer.querySelectorAll('.extra-network-cards');
