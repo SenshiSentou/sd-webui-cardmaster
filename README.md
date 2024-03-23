@@ -56,6 +56,6 @@ There are also two "invisible" behaviours:
 
 # Installation
 
-Since this is a separate branch you will need to manually downloadad and add this extension. Click the green `<> Code` button above, then choose `Download ZIP`. Extract the archive and place the folder in your A1111 installation's `extensions` folder.
+Open your A1111 Web UI and go to `Extensions > Install from URL`. Paste in the link to this repo (`https://github.com/SenshiSentou/sd-webui-cardmaster.git`), click `Install` and restart the web ui.
 
-If you already had Tinycards installed, please remove or disable that first.
+If you are installing this extension manually and already had Tinycards installed, please remove or disable that first.
