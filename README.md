@@ -1,5 +1,9 @@
 <img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/toma-chan.png" width="300">
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J81VHA2)
+
+![](https://github.com/SenshiSentou/sd-webui-tinycards/blob/main/preview.gif)
+
 # Card Master
 
 Card Master adds a host of easability and quality of life features to the cards found in the "Extra Networks" tabs (TIs, Hypernetworks, Checkpoints, and, most notably, LoRAs).
