@@ -179,8 +179,10 @@
             await wait(200);
             extensionsDiv = app.querySelector('#extensions');
         }
-        const tinycards = Array(...extensionsDiv.querySelectorAll('input[type="checkbox"]')).find(c => c.name == 'enable_sd-webui-tinycards');
-        if (tinycards && tinycards.checked) {
+        const extensionCheckboxes = Array(...extensionsDiv.querySelectorAll('input[type="checkbox"]'));
+        const cardMasterCheckbox = extensionCheckboxes.find(c => c.name == 'enable_sd-webui-tinycards');
+        const tinyCardsCheckbox = extensionCheckboxes.find(c => c.name == 'enable_sd-webui-tinycards');
+        if (cardMasterCheckbox && tinyCardsCheckbox && tinyCardsCheckbox.checked) {
             const modalContainer = createElementWithClassList('div', 'card-master-modal-container');
             const modal = createElementWithInnerTextAndClassList('div', "Card Master replaces the old \"Tinycards\" extension. Please go to the extensions tab and remove or disable the Tinycards extension for the best experience.", 'card-master-modal');
             function closeModal() {
