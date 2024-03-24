@@ -32,8 +32,6 @@ type InspectorType = 'docked' | 'floating' | 'compact';
 
 (function(cm){
     class Inspector extends HTMLDivElement{
-        // static all: Inspector[];
-
         nameField: HTMLElement;
         descriptionField: HTMLElement;
         activationTextContainer: HTMLElement;
@@ -42,7 +40,6 @@ type InspectorType = 'docked' | 'floating' | 'compact';
         hostCard: HTMLElement | null; // card we're attached to. Naming things is hard
 
         get isOpen(): boolean{
-            // return this.parentElement.dataset.cardmasterInspectorIsOpen == 'true';
             return this.dataset.isOpen == 'true';
         }
 
@@ -68,18 +65,8 @@ type InspectorType = 'docked' | 'floating' | 'compact';
             cm.promptTextAreas.img2img.positive.addEventListener('change', () => this.refreshActivationTexts('img2img'));
             cm.promptTextAreas.img2img.negative.addEventListener('change', () => this.refreshActivationTexts('img2img'));
 
-            // for(const g in ['txt2img', 'img2img']){
-            //     for(const p in ['positive', 'negative']){
-            //         for(const e in ['change', 'inpuu']){
-            //             cm.promptTextAreas[g][p].addEventListener(e, () => this.refreshActivationTexts(<GenerationType>g));
-            //         }
-            //     }
-            // }
-
             this.dataset.inspectorType = type;
             this.toggle(isOpen);
-
-            // Inspector.all.push(this);
         }
 
         update(card: HTMLElement | null): void{
@@ -125,7 +112,6 @@ type InspectorType = 'docked' | 'floating' | 'compact';
             this.notesField.innerText = info['notes'];
     
             const generationType: GenerationType = getCurrentGenerationType();
-            // todo: check in and allow add to negative prompt fields
     
             for(const section of info['activation sections']){
                 if(section.length == 0){
@@ -283,6 +269,29 @@ type InspectorType = 'docked' | 'floating' | 'compact';
             await wait(200);
         }
 
+        let extensionsDiv = app.querySelector('#extensions');
+
+        while(extensionsDiv == undefined){
+            await wait(200);
+            extensionsDiv = app.querySelector('#extensions');
+        }
+
+        const tinycards = Array(...extensionsDiv.querySelectorAll('input[type="checkbox"]')).find(c => c.name == 'enable_sd-webui-tinycards');
+        if(tinycards && tinycards.checked){
+            const modalContainer = createElementWithClassList('div', 'card-master-modal-container');
+            const modal = createElementWithInnerTextAndClassList('div', "Card Master replaces the old \"Tinycards\" extension. Please go to the extensions tab and remove or disable the Tinycards extension for the best experience.", 'card-master-modal');
+            
+            function closeModal(){
+                modalContainer.style.display = 'none';
+            }
+            
+            modalContainer.appendChild(modal);
+            modal.appendChild(createElementWithInnerTextAndClassList('button', "Got it!")).addEventListener('click', closeModal);
+            
+            app.querySelector('.contain').appendChild(modalContainer);
+            modalContainer.addEventListener('click', closeModal);
+        }
+
         if(opts.cardmaster_card_activation_text_count.indexOf('📄➕📑') == 0){ // emojies are 2 chars long, so we can't just check [0]
             document.body.dataset.cardmasterCardHint = 'full'; // I wanted to apply these to app.dataset instead, but somehow that errors out as null?
         }
@@ -354,7 +363,7 @@ type InspectorType = 'docked' | 'floating' | 'compact';
             const detailViewButton = createElementWithClassList('button', 'card-master-extra-ui', ...document.getElementById('txt2img_extra_refresh').classList);
             detailViewButton.classList.remove('hidden');
             detailViewButton.id = `txt2img_extra_card-master-detail-view-toggle`;
-            // detailViewButton.appendChild(document.createElement('img'));
+
             navTab.appendChild(detailViewButton);
 
             const inspector = new Inspector('docked', !!opts.cardmaster_open_detail_view_on_load);
@@ -371,7 +380,7 @@ type InspectorType = 'docked' | 'floating' | 'compact';
                 }
             });
             
-            // inneer html gets reset once extra networks get added
+            // inner html gets reset once extra networks get added
             let cardContainers = networkContainer.querySelectorAll('.extra-network-cards');
             
             // wait for cards to load
@@ -385,7 +394,6 @@ type InspectorType = 'docked' | 'floating' | 'compact';
                 cardBecameVisibileObserver.observe(card);
             }
 
-            // cardContainer.selectedCard = activeCard;
             networkContainer.appendChild(inspector);
 
             networkContainer.addEventListener('mouseover', e => {
@@ -486,14 +494,12 @@ type InspectorType = 'docked' | 'floating' | 'compact';
     function getTagRegExp(tag: string): RegExp{
         const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-        // return new RegExp(`(?<=(^|[,([:])\\s*)(?<![\\w\\d:])${escapedTag}(?![\\w\\d:])`, 'i');
         return new RegExp(`(?<=(^|[,([:])\\s*)(?<![\\w\\d_\\-:])${escapedTag}(?![\\w\\d_\\-: ])`, 'i');
     }
 
     function isLoraOrTICard(card: HTMLElement): boolean{
         const enc = card.closest('.extra-network-cards');
 
-        // return enc && (enc.id == 'txt2img_lora_cards' || enc.id == 'txt2img_textual_inversion_cards');
         return enc && enc.id.match(/(?:txt|img)2img_(?:lora_cards|textual_inversion_cards)/i) != null;
     }
 
@@ -621,13 +627,9 @@ type InspectorType = 'docked' | 'floating' | 'compact';
         const reTagWithTrailings = new RegExp(`((?<=(^|[,([:])\\s*)(?<![\\w\\d])(${tags.join('|')})(?![\\w\\d_\\-: ])\\s*,?\\s*)`, 'gi'); // negative lookxxxs, to prevent 'hat' from matching 'HATs', 'highHAT', 'red hat', or <lora:hat:1>. Then include any trailing commas and spaces
 
         return text.replaceAll(reTagWithTrailings, ''); // first, remove all valid instances of the tag, along with associated ',' and \s
-        // .replaceAll(/[([][:\d\s.()]*[)\]]\s*,?\s*/gi, '') // next, do a pass to clean up any () or [::] groups that are now empty. Matches any such groups that only contain other parentheses, ':', '.', and \d
-        // .replaceAll(/ *,+ */g, `,${opts.extra_networks_add_text_separator}`) // then combine all consecutive spaces and commas into one single separator
-        // .replace(/\s*,?\s*$/gi, ''); // and finally, remove any left-over commas and whitespaces at the end of the text. EZ-PZ!
     }
 
     function getTagsFromText(text: string): string[]{
-        // return text.split(/,\s*/).filter(t => t.length > 0 && /\S/.test(t)); // split by , then remove empty or all-whitespace tags
         return text.split(/(?<!\(),\s*(?![^(]*\))/).filter(t => t.length > 0 && /\S/.test(t)); // split by , not in () then remove empty or all-whitespace tags        
     }
 

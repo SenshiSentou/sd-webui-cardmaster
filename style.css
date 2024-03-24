@@ -359,6 +359,42 @@
     -webkit-mask-position: center;
 }
 
+/* Modal */
+.card-master-modal-container {
+    position: fixed;
+    display: grid;
+    place-items: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000D;
+    z-index: 999;
+}
+
+.card-master-modal {
+    position: fixed;
+    display: grid;
+    place-items: center;
+    top: 37.5vh;
+    left: 20vw;
+    width: 60vw;
+    height: 25vh;
+    background: var(--body-background-fill);
+    border-radius: 6px;
+    /* box-shadow: 3px 3px 11px 0px #000; */
+    box-shadow: inset 0 0 0 4px var(--body-background-fill), inset 0 0 0 7px #FF9334;
+    /* z-index: 999; */
+}
+
+.card-master-modal button {
+    background: #FF9334;
+    border-radius: 6px;
+    padding: .2em 2em;
+    font-size: 1.2em;
+    color: white;
+}
+
 /* Settings */
 #column_settings_cardmaster{
     display: grid;

@@ -1,5 +1,7 @@
 <img src="https://github.com/SenshiSentou/sd-webui-tinycards/blob/cardmaster-beta/toma-chan.png" width="300">
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J81VHA2)
+
 # Card Master
 
 Card Master adds a host of easability and quality of life features to the cards found in the "Extra Networks" tabs (TIs, Hypernetworks, Checkpoints, and, most notably, LoRAs).
@@ -54,6 +56,6 @@ There are also two "invisible" behaviours:
 
 # Installation
 
-Since this is a separate branch you will need to manually downloadad and add this extension. Click the green `<> Code` button above, then choose `Download ZIP`. Extract the archive and place the folder in your A1111 installation's `extensions` folder.
+Open your A1111 Web UI and go to `Extensions > Install from URL`. Paste in the link to this repo (`https://github.com/SenshiSentou/sd-webui-cardmaster.git`), click `Install` and restart the web ui.
 
-If you already had Tinycards installed, please remove or disable that first.
+This extension was formerly known as **Tiny Cards**. If you are installing this extension manually and already had Tinycards installed, please remove or disable the old version first.
