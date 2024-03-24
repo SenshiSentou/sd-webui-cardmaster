@@ -58,4 +58,4 @@ There are also two "invisible" behaviours:
 
 Open your A1111 Web UI and go to `Extensions > Install from URL`. Paste in the link to this repo (`https://github.com/SenshiSentou/sd-webui-cardmaster.git`), click `Install` and restart the web ui.
 
-If you are installing this extension manually and already had Tinycards installed, please remove or disable that first.
+This extension was formerly known as **Tiny Cards**. If you are installing this extension manually and already had Tinycards installed, please remove or disable the old version first.
