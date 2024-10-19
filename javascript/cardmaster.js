@@ -180,7 +180,7 @@
             extensionsDiv = app.querySelector('#extensions');
         }
         const extensionCheckboxes = Array(...extensionsDiv.querySelectorAll('input[type="checkbox"]'));
-        const cardMasterCheckbox = extensionCheckboxes.find(c => c.name == 'enable_sd-webui-tinycards');
+        const cardMasterCheckbox = extensionCheckboxes.find(c => c.name == 'enable_sd-webui-cardmaster');
         const tinyCardsCheckbox = extensionCheckboxes.find(c => c.name == 'enable_sd-webui-tinycards');
         if (cardMasterCheckbox && tinyCardsCheckbox && tinyCardsCheckbox.checked) {
             const modalContainer = createElementWithClassList('div', 'card-master-modal-container');
